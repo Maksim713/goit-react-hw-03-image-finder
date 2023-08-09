@@ -29,9 +29,8 @@ class ImageGalleryStatus extends PureComponent {
     }
 
     if (prevSearch !== nextSearch) {
-      this.setState({ page: 1 });
+      this.setState({ page: 1, loadMoreClicked: false });
       window.scroll(0, 0);
-      this.setState({ loadMoreClicked: false });
     }
 
     if (!loadMoreClicked && !error) {
