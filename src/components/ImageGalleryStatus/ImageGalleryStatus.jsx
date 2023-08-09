@@ -20,7 +20,7 @@ class ImageGalleryStatus extends PureComponent {
 
   componentDidUpdate(prevProps, prevState) {
     const { search } = this.props;
-    const { page } = this.state;
+    const { page, loadMoreClicked, error } = this.state;
     const prevSearch = prevProps.search;
     const nextSearch = this.props.search;
 
@@ -34,16 +34,16 @@ class ImageGalleryStatus extends PureComponent {
       this.setState({ loadMoreClicked: false });
     }
 
+    if (!loadMoreClicked && !error) {
+      toast.success('All found images');
+    }
+
     this.setState({ isLoading: true });
 
     pixabayApi
       .getSearchImages({ value: search, page })
       .then(({ hits, totalHits }) => {
         const uniqueHits = this.addIdToCollection(hits);
-
-        if (!this.state.loadMoreClicked && !this.state.error) {
-          toast.success('All found images');
-        }
 
         this.setState(p => {
           const images =
@@ -89,7 +89,6 @@ class ImageGalleryStatus extends PureComponent {
     }
 
     if (error) {
-      //   toast.error(`Incorrect entry!`);
       return (
         <p className={css.container}>
           {error}
